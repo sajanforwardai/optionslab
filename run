@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Convenience wrapper so you never think about the venv path.
+#   ./run test          -> pytest
+#   ./run app           -> streamlit on 8888
+#   ./run py <file>     -> python
+cd "$(dirname "$0")"
+case "$1" in
+  test) exec ./.venv/bin/python -m pytest "${@:2}" ;;
+  app)  exec ./.venv/bin/python -m streamlit run optionslab/display/app.py \
+             --server.port 8888 --server.address 0.0.0.0 --server.headless true ;;
+  py)   exec ./.venv/bin/python "${@:2}" ;;
+  *)    echo "usage: ./run {test|app|py}" ; exit 1 ;;
+esac
